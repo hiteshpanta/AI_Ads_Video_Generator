@@ -41,7 +41,7 @@ function WorkspaceProvider({children}: {children: any}) {
         <AppSidebar />
         
       
-        <div>
+        <div className="w-full p-10">
           <SidebarTrigger />
           {children}
         </div>
