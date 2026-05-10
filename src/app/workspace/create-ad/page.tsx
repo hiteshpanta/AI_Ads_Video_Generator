@@ -5,34 +5,63 @@ import axios from "axios";
 import {  FileVideoCameraIcon, LoaderCircle, Sparkles } from "lucide-react"
 import { useContext, useState } from "react"
 import { UserDetailContext } from "../../../../context/UserDetailContext";
-import { CreateNewVideoData } from "../../../../convex/videoData";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { useRouter } from "next/navigation";
+
 
 
 function CreateAd() {
-  const [ userInput, setUserInput ] = useState<string>();
+  const [ userInput, setUserInput ] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false)
-  const { userDetail, setUserDetail } = useContext(UserDetailContext);
+  const router = useRouter();
+
+  const { userDetail } = useContext(UserDetailContext);
+
+  const createvideo = useMutation(api.videoData.CreateNewVideoData);
 
   const GenerateAIVideoScript = async() => {
-    setLoading(true)
-    const result = await axios.post('/api/generate-script', {
-      topic: userInput
-    });
-    console.log(result.data);
-    
-    //save script to db
 
+    try {
+      setLoading(true)
+      const response = await axios.post('/api/generate-script', {
+        topic: userInput
+      });
 
-    const RAWResult = (result?.data).replace('```json','').replace('```','');
-    const JSONResult = JSON.parse(RAWResult);
+      let jsonResult: any;
+      
 
-    const res = await CreateNewVideoData({
-      uid: userDetail?._id,
-      topic: userInput,
-      scriptVariant: JSONResult
-    });
-    console.log(res);
-    setLoading(false);
+      if (typeof response.data === "string") {
+          try {
+          const raw = (response?.data).replace('```json','').replace('```','').trim();
+          jsonResult = JSON.parse(raw);
+          
+        } catch (err: any) {
+          jsonResult = {rawText: response.data };
+
+          
+        }
+      } else {
+        jsonResult = response.data;
+      }
+      
+
+      await createvideo({
+        uid: userDetail?._id,
+        topic: userInput,
+        scriptVariant: jsonResult,
+      });
+
+      console.log("Saved successfully");
+      router.push('/workspace/create-ad/'+response)
+      
+    } catch (err: any) {
+      console.error(err?.response?.data || err.message);
+      
+    } finally {
+      setLoading(false)
+    }
+
 
   }
 
@@ -47,9 +76,8 @@ function CreateAd() {
         onChange={(e) => setUserInput(e.target.value)}/>
 
         <Button className={'mt-5 w-md bg-blue-600'} onClick={GenerateAIVideoScript}
-        disabled={loading}>{loading ? <LoaderCircle className="animate-spin"/> : <Sparkles/> } Generate</Button>
+        disabled={loading}>{loading ? <LoaderCircle className="animate-spin"/> : <Sparkles/> } {loading ? "Generating..." : "Generate"} </Button>
     </div>
   )
 }
-
 export default CreateAd

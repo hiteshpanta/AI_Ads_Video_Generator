@@ -8,22 +8,52 @@ export const openai = new OpenAI({
     apiKey: process.env.OPENROUTER_API_KEY,
     })
 
-export async function POST(req: any) {
+export async function POST(req: Request) {
+    const body = await req.json()
+    const { topic } = await body;
 
-    const { topic } = await req.json();
+    if (!topic) {
+        return NextResponse.json(
+            { error: "Topic is required" },
+            { status: 400 }
+        );
+    }
 
     const PROMPT = GENERATE_SCRIPT_PROMPT.replace('{topic}', topic)
 
-    
-    const completion = await openai.chat.completions.create({
-        model: "google/gemma-4-31b-it:free",
+    try {
+        const completion = await openai.chat.completions.create({
+        model: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
         messages: [
             { role: "user", content: PROMPT }
             ],
         })
 
-        console.log(completion.choices[0].message)
-        return NextResponse.json(completion.choices[0].message?.content)
+
+        const content = completion?.choices[0]?.message?.content;
+
+        console.log("AI RESPONSE:", content);
+
+        if (!content) {
+            return NextResponse.json(
+                {error: "No response from AI"},
+                { status: 500 }
+            )
+        }
+
+        return NextResponse.json(content);
+        
+    } catch (err: any) {
+        console.error("API ERROR:", err);
+
+        return NextResponse.json(
+            { error: err.message || "Internal Server Error"},
+            { status: 500 }
+        );
+        
+    }
+    
+    
 
 
 
