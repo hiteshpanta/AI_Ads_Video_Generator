@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { Video } from 'lucide-react';
 import React, { useState } from 'react'
 
 interface ScriptItem {
@@ -36,7 +37,8 @@ function Script({videoData, onHandleInputChange }:  ScriptProps) {
 
   return (
     <div className='p-5 shadow rounded-xl'>
-      <h2 className='font-bold text-2xl'>Video Ads Script</h2>
+      <h2 className='font-bold text-lg flex gap-2 items-center'>
+        <Video className='p-2 bg-green-600 text-white h-10 w-10 rounded-md'/> Video Ads Script</h2>
       <hr className='my-3'/>
       <div className=''>
         <label className='text-gray-500'> Video Project Topic </label>
