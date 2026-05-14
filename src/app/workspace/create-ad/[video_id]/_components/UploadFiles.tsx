@@ -10,15 +10,15 @@ interface UploadFileProps {
 function UploadFiles({videoData}: UploadFileProps) {
     const [files, setFiles] = useState<File[]>([]);
 
-    const handleFileChange = (event: any) => {   
+    const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {   
         if (!event.target.files) return;
         const selectedFiles = Array.from(event.target.files);
-        setFiles(prev => [...prev, ...selectedFiles]);
+        setFiles((prev) => [...prev, ...selectedFiles]);
     }
 
-    const removeImage = (indexToRemove: any) => {
-        const uploadedFiles = files.filter((_,index) => index! === indexToRemove)
-        setFiles(uploadedFiles)
+    const removeImage = (indexToRemove: number) => {
+        const uploadedFiles = files.filter((_,index) => index !== indexToRemove);
+        setFiles(uploadedFiles);
 
     }
   return (
@@ -39,15 +39,15 @@ function UploadFiles({videoData}: UploadFileProps) {
                 onChange={handleFileChange}/>
         </div>
         <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-3'>
-            {files.map((file, index)=> (
+            {files.map((file, index)=> {
                 const previewUrl = URL.createObjectURL(file);
                 return (
                     <div key={index} className='relative'>
-                        <X className='absolute text-white text-sm' onClick={() => removeImage(index)}/>
+                        <X size={20} className='absolute text-white text-sm' onClick={() => removeImage(index)}/>
                         <Image src={previewUrl} alt='images' width={150} height={150} className='w-[90px] h-[70px] object-cover rounded-lg'/>
                     </div>
                 )
-            ))}
+            })}
         </div>
     </div>
 
