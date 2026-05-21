@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { api } from '../../../../../convex/_generated/api';
 import Script from './_components/Script';
 import UploadFiles from './_components/UploadFiles';
+import AvatarList from './_components/AvatarList';
 
 interface ScriptItem {
     content: string;
@@ -63,7 +64,8 @@ function CreateVideo() {
       <div className='grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 mt-8'>
         <div className='md:col-span-2'>
             <Script videoData={videoData} onHandleInputChange={onHandleInputChange} />
-            <UploadFilesgi/>
+            <UploadFiles videoData={videoData}/>
+            <AvatarList videoData={videoData}/>
         </div>
 
         <div>
