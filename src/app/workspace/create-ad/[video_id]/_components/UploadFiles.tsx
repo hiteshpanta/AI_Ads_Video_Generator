@@ -49,6 +49,48 @@ function UploadFiles({videoData}: UploadFileProps) {
                 )
             })}
         </div>
+
+
+
+         <div className=''>
+            <label className='text-gray-500'>Upload Image or Video for your ads</label>
+            <label htmlFor='fileUpload'>
+                <div className='p-3 bg-secondary border-dashed rounded-xl flex items-center flex-col cursor-pointer'>
+                    <FilePlus2  className='h-10 w-10 text-gray-400'/>
+                    <h2>Click here to Upload files</h2>
+                </div>
+            </label>
+            <input type='file' id='fileUpload' className='invisible' accept='image/*,video/*' multiple
+                onChange={handleFileChange}/>
+        </div>
+        <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-3'>
+            {files.map((file, index)=> {
+                const previewUrl = URL.createObjectURL(file);
+                return (
+                    <div key={index} className='relative'>
+                        <X size={20} className='absolute text-white text-sm' onClick={() => removeImage(index)}/>
+                        <Image src={previewUrl} alt='images' width={150} height={150} className='w-[90px] h-[70px] object-cover rounded-lg'/>
+                    </div>
+                )
+            })}
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     </div>
 
    
