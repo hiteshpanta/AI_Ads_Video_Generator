@@ -55,10 +55,7 @@ function UploadFiles({videoData}: UploadFileProps) {
          <div className=''>
             <label className='text-gray-500'>Upload Image or Video for your ads</label>
             <label htmlFor='fileUpload'>
-                <div className='p-3 bg-secondary border-dashed rounded-xl flex items-center flex-col cursor-pointer'>
-                    <FilePlus2  className='h-10 w-10 text-gray-400'/>
-                    <h2>Click here to Upload files</h2>
-                </div>
+                
             </label>
             <input type='file' id='fileUpload' className='invisible' accept='image/*,video/*' multiple
                 onChange={handleFileChange}/>
