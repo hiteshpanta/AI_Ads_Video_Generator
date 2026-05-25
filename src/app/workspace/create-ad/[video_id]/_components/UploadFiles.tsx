@@ -52,11 +52,7 @@ function UploadFiles({videoData}: UploadFileProps) {
 
 
 
-         <div className=''>
-            
-            <input type='file' id='fileUpload' className='invisible' accept='image/*,video/*' multiple
-                onChange={handleFileChange}/>
-        </div>
+        
         <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-3'>
             {files.map((file, index)=> {
                 const previewUrl = URL.createObjectURL(file);
