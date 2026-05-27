@@ -89,19 +89,6 @@ function AppSidebar() {
       <SidebarFooter />
 
 
-
-
-
-
-
-      <Sidebar>
-      <SidebarHeader className="flex items-center my-5">
-        <Image  src={'/logo.svg'} alt="logo" width={200} height={200}/>
-      </SidebarHeader>
-      <SidebarFooter />
-    </Sidebar>
-
-
       
     </Sidebar>
 
