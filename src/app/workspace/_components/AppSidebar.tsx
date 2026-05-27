@@ -87,8 +87,49 @@ function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
+
+
+
+
+
+
+
+      <Sidebar>
+      <SidebarHeader className="flex items-center my-5">
+        <Image  src={'/logo.svg'} alt="logo" width={200} height={200}/>
+      </SidebarHeader>
+      <hr />
+      <SidebarContent>
+        <SidebarGroup >
+            <Button className="mt-5">+ Create New Ad Video</Button>
+        </SidebarGroup>
+        <SidebarGroup >
+            <SidebarGroupLabel>Application</SidebarGroupLabel>
+            <SidebarGroupContent>
+                <SidebarMenu>
+                    {MenuOptions.map((menu, index) =>(
+                        <SidebarMenuItem key={menu.title}>
+                            <SidebarMenuButton className={'p-5'}>
+                                <Link href={menu.path} className={`text-[17px] flex gap-3 ${path === menu.path ? 'text-blue-100' : ""}`}>
+                                    <menu.icon className="h-10 w-10"/>
+                                    <span>{menu.title}</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    ))}
+                </SidebarMenu>
+            </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter />
     </Sidebar>
-  )
+    </Sidebar>
+
+
+
+
+
+    
 }
 
 export default AppSidebar
