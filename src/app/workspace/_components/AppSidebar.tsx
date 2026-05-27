@@ -103,13 +103,7 @@ function AppSidebar() {
         <SidebarGroup >
             <Button className="mt-5">+ Create New Ad Video</Button>
         </SidebarGroup>
-        <SidebarGroup >
-            <SidebarGroupLabel>Application</SidebarGroupLabel>
-            <SidebarGroupContent>
-                <SidebarMenu>
       
-            </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
