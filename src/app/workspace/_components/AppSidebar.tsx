@@ -98,15 +98,11 @@ function AppSidebar() {
       <SidebarHeader className="flex items-center my-5">
         <Image  src={'/logo.svg'} alt="logo" width={200} height={200}/>
       </SidebarHeader>
-      <hr />
-      <SidebarContent>
-        <SidebarGroup >
-            <Button className="mt-5">+ Create New Ad Video</Button>
-        </SidebarGroup>
-      
-      </SidebarContent>
       <SidebarFooter />
     </Sidebar>
+
+
+      
     </Sidebar>
 
 
