@@ -107,17 +107,7 @@ function AppSidebar() {
             <SidebarGroupLabel>Application</SidebarGroupLabel>
             <SidebarGroupContent>
                 <SidebarMenu>
-                    {MenuOptions.map((menu, index) =>(
-                        <SidebarMenuItem key={menu.title}>
-                            <SidebarMenuButton className={'p-5'}>
-                                <Link href={menu.path} className={`text-[17px] flex gap-3 ${path === menu.path ? 'text-blue-100' : ""}`}>
-                                    <menu.icon className="h-10 w-10"/>
-                                    <span>{menu.title}</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    ))}
-                </SidebarMenu>
+      
             </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
