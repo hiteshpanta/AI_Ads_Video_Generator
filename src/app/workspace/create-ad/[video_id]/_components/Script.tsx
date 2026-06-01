@@ -63,16 +63,6 @@ function Script({videoData, onHandleInputChange }:  ScriptProps) {
 
 
 
-
-      <div className=''>
-        <label className='text-gray-500'> Video Project Topic </label>
-        <Input 
-            className='text-lg'
-            value={videoData?.topic}
-            onChange={(e) => onHandleInputChange('topic', e.target.value)}
-        />
-      </div>
-
       <div className='mt-3'>
         <label className='text-gray-500'>Video Script</label>
         <Textarea 
