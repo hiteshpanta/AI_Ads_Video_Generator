@@ -58,6 +58,35 @@ function Script({videoData, onHandleInputChange }:  ScriptProps) {
         />
       </div>
 
+
+
+
+
+
+
+      <div className=''>
+        <label className='text-gray-500'> Video Project Topic </label>
+        <Input 
+            className='text-lg'
+            value={videoData?.topic}
+            onChange={(e) => onHandleInputChange('topic', e.target.value)}
+        />
+      </div>
+
+      <div className='mt-3'>
+        <label className='text-gray-500'>Video Script</label>
+        <Textarea 
+            className='text-lg'
+            value={selectedScriptContent}
+            onChange={(e) => handleTextareaChange(e.target.value)}
+        />
+      </div>  
+
+
+
+
+        
+
       <div className='grid gap-3 mt-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1'>
         {videoData?.scriptVariant?.map((script, index) => (
             <div key={index} className={`p-5 text-sm border rounded-lg cursor-pointer  transition-all duration-300 hover:bg-blue-100
