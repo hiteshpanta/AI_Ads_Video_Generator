@@ -82,9 +82,6 @@ function CreateAd() {
 
 
 
-      <h2 className="flex font-bold text-2xl text-center items-center"><FileVideoCameraIcon/> Create AI Video Ads in Just One Click</h2>
-      <p className="mt-3 text-lg text-gray-500">Turn your ideas into stunning, scroll-stopping videos -instantly, effortlessly, and without editing sills!</p>
-
       <Input
         placeholder="Enter the topic or product info"
         className={'w-lg text-lg mt-5'}
