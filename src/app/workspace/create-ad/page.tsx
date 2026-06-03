@@ -1,4 +1,4 @@
-"use client";
+hi"use client";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import axios from "axios";
@@ -77,6 +77,21 @@ function CreateAd() {
 
         <Button className={'mt-5 w-md bg-blue-600'} onClick={GenerateAIVideoScript}
         disabled={loading}>{loading ? <LoaderCircle className="animate-spin"/> : <Sparkles/> } {loading ? "Generating..." : "Generate"} </Button>
+
+
+
+
+
+      <h2 className="flex font-bold text-2xl text-center items-center"><FileVideoCameraIcon/> Create AI Video Ads in Just One Click</h2>
+      <p className="mt-3 text-lg text-gray-500">Turn your ideas into stunning, scroll-stopping videos -instantly, effortlessly, and without editing sills!</p>
+
+      <Input
+        placeholder="Enter the topic or product info"
+        className={'w-lg text-lg mt-5'}
+        onChange={(e) => setUserInput(e.target.value)}/>
+
+        <Button className={'mt-5 w-md bg-blue-600'} onClick={GenerateAIVideoScript}
+        disabled={loading}>
     </div>
   )
 }
