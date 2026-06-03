@@ -78,17 +78,6 @@ function CreateAd() {
         <Button className={'mt-5 w-md bg-blue-600'} onClick={GenerateAIVideoScript}
         disabled={loading}>{loading ? <LoaderCircle className="animate-spin"/> : <Sparkles/> } {loading ? "Generating..." : "Generate"} </Button>
 
-
-
-
-
-      <Input
-        placeholder="Enter the topic or product info"
-        className={'w-lg text-lg mt-5'}
-        onChange={(e) => setUserInput(e.target.value)}/>
-
-        <Button className={'mt-5 w-md bg-blue-600'} onClick={GenerateAIVideoScript}
-        disabled={loading}>
     </div>
   )
 }
