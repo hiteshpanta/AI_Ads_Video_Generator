@@ -35,16 +35,6 @@ function WorkspaceProvider({children}: {children: any}) {
 
 
 
-
-
-
-  const CreateNewUser = async() =
-
-  useEffect(()=> {
-    user && CreateNewUser();
-  }, [user]);
-
-
   return (
     <UserDetailContext.Provider value={{ userDetail, setUserDetail}}>
 
