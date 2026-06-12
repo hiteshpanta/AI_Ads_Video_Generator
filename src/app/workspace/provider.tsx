@@ -34,6 +34,28 @@ function WorkspaceProvider({children}: {children: any}) {
   }, [user]);
 
 
+
+
+
+
+  const CreateNewUser = async() => {
+
+    const result = await newUserMutation({
+      name: user?.fullName || "",
+      email: user?.primaryEmailAddress?.emailAddress || "",
+      picture: user?.imageUrl || ""
+
+    });
+    console.log(result);
+    setUserDetail(result);
+
+  }
+
+  useEffect(()=> {
+    user && CreateNewUser();
+  }, [user]);
+
+
   return (
     <UserDetailContext.Provider value={{ userDetail, setUserDetail}}>
 
