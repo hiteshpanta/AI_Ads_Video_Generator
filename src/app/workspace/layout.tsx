@@ -10,9 +10,7 @@ function WorkspaceLayout({children}: {children: any}) {
         </WorkspaceProvider>
 
       
-      <WorkspaceProvider>
-            {children}
-        </WorkspaceProvider>
+      
 
       <WorkspaceProvider>
             {children}
