@@ -8,7 +8,15 @@ function WorkspaceLayout({children}: {children: any}) {
         <WorkspaceProvider>
             {children}
         </WorkspaceProvider>
+
       
+      <WorkspaceProvider>
+            {children}
+        </WorkspaceProvider>
+
+      <WorkspaceProvider>
+            {children}
+        </WorkspaceProvider>
     </div>
   )
 }
