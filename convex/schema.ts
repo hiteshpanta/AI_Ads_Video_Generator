@@ -13,12 +13,6 @@ export default defineSchema({
 
     }),
 
-    data:defineTable({
-        name: v.string(),
-        type: v.string(),
-        picture: v.string(),
-    }),
-
     videoData: defineTable({
         topic: v.string(),
         scriptVariant: v.any(),
