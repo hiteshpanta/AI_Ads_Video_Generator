@@ -13,6 +13,15 @@ export default defineSchema({
 
     }),
 
+    data:defineTable({
+        name: v.string(),
+        email: v.string(),
+        picture: v.string(),
+        credits: v.number(),
+        paymentId: v.optional(v.string()),
+
+    }),
+
     videoData: defineTable({
         topic: v.string(),
         scriptVariant: v.any(),
