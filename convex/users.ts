@@ -10,6 +10,22 @@ export const CreateNewUser = mutation({
 
     },
 
+
+      args: {
+        name: v.string(),
+        email: v.string(),
+        picture: v.string()
+
+    },
+
+
+      args: {
+        name: v.string(),
+        email: v.string(),
+        picture: v.string()
+
+    },
+
     handler:async(ctx, args) => {
         
 
