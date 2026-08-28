@@ -25,4 +25,17 @@ export default defineSchema({
         avatarUrl: v.optional(v.any()),
         videoUrl: v.optional(v.any()),
     })
+
+    adsData: defineTable({
+        topic: v.string(),
+        scriptVariant: v.any(),
+        script: v.optional(v.string()),
+        assets: v.optional(v.any()),
+        avatar: v.optional(v.any()),
+        voice: v.optional(v.any()),
+        uid: v.id('users'),
+        voiceUrl: v.optional(v.any()),
+        avatarUrl: v.optional(v.any()),
+        videoUrl: v.optional(v.any()),
+    })
 })
