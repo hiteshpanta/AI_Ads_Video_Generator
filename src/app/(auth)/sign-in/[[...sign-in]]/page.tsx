@@ -1,7 +1,7 @@
 import { SignIn } from '@clerk/nextjs'
 
 
-function handle login() {
+function handleLogin() {
   let login = getData();
 }
 
