@@ -10,7 +10,11 @@ export default function AvatarList() {
 
     const GetAvatarLsit = async() => {
 
-        const result = await axios.get('https://api.heygen.com/v3/avatars')
+        const result = await axios.get('https://api.heygen.com/v3/avatars',{
+          headers : {
+            "x-api-key" : process.env.HEYGEN_API_KEY
+          }
+        })
 
         console.log(result.data);
     }
