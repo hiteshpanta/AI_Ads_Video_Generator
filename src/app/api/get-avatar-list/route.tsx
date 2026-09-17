@@ -13,9 +13,7 @@ export async function GET(req: any) {
 
 
       const result2 = await axios.get('https://api.heygen.com/v3/avatars',{
-        headers: {
-            	"x-api-key": `${process.env.HEYGEN_API_KEY}`
-        }
+       
     });
 
     return NextResponse.json(result.data?.data)
