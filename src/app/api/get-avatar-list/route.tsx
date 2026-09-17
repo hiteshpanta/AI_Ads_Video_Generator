@@ -12,9 +12,6 @@ export async function GET(req: any) {
     });
 
 
-      const result2 = await axios.get('https://api.heygen.com/v3/avatars',{
-       
-    });
 
     return NextResponse.json(result.data?.data)
     
