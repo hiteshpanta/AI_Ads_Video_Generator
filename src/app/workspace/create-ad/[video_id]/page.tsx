@@ -36,7 +36,7 @@ function CreateVideo() {
         try {
             setLoading(true);
              const result: VideoDataInterfce | null = await convex.query(api.videoData.GetVideoDataById, {
-                    vid: video_id,
+                    vid : video_id,
             })
             setVideoData(result);
             console.log("Video Data:",result)

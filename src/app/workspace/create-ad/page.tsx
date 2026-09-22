@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 
 function CreateAd() {
   const [ userInput, setUserInput ] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false)
+  const [ loading, setLoading ] = useState<boolean>(false)
   const router = useRouter();
 
   const { userDetail } = useContext(UserDetailContext);
@@ -53,7 +53,7 @@ function CreateAd() {
       });
 
       console.log("Saved successfully");
-      router.push('/workspace/create-ad/'+response)
+      router.push('/workspace/create-ad/' + response)
       
     } catch (err: any) {
       console.error(err?.response?.data || err.message);

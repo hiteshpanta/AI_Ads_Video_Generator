@@ -18,7 +18,7 @@ function WorkspaceProvider({children}: {children: any}) {
 
   const CreateNewUser = async() => {
 
-    const result = await newUserMutation({
+    const result: any = await newUserMutation({
       name: user?.fullName || "",
       email: user?.primaryEmailAddress?.emailAddress || "",
       picture: user?.imageUrl || ""
