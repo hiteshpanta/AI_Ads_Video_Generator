@@ -8,7 +8,6 @@ export default clerkMiddleware(async (auth, req) => {
   }
 })
 
-// some change
 
 export const config = {
   matcher: [
