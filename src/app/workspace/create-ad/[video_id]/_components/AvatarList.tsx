@@ -39,7 +39,7 @@ export default function AvatarList({videoData,onHandleInputChange}: {videoData:a
                   <Image 
                     src={avatar?.preview_image_url}
                     alt={avatar?.avatar_id}
-                    width={100}
+                    // width={100}
                     height={100}
                     className='rounded-lg bg-black'
                   />
