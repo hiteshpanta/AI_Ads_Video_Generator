@@ -65,7 +65,7 @@ function CreateVideo() {
         <div className='md:col-span-2'>
             <Script videoData={videoData} onHandleInputChange={onHandleInputChange} />
             <UploadFiles videoData={videoData}/>
-            <AvatarList videoData={videoData}/>
+            <AvatarList videoData={videoData} onHandleInputChange={onHandleInputChange}/>
         </div>
 
         <div>

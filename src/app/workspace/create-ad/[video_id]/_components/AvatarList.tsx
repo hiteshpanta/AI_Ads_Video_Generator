@@ -4,7 +4,7 @@ import { User } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-export default function AvatarList() {
+export default function AvatarList({videoData,onHandleInputChange}: {videoData:any, onHandleInputChange: (field: string, value: any) => void}) {
 
   const [ avatarList, setAvatarList ] = useState<any[]>([])
 
@@ -33,10 +33,17 @@ export default function AvatarList() {
         <div>
             <label>Select Your Avatar for video ad</label>
 
-            <div>
+            <div className='flex flex-wrap gap-5 h-[200px] overflow-auto mt-3'>
               {avatarList.length>0 && avatarList?.map((avatar, index) => (
-                <div key={index}>
-                  <Image src={avatar?.preview_image_url} alt={avatar?.avatar_id} width={100} height={100} />
+                <div key={index} onClick={() => onHandleInputChange('avatar', avatar)} className={`${videoData?.avatar?._id == avatar?.id && 'border border-primary bg-blue-100 text-primary'} p-1 rounded-lg cursor-pointer`}>
+                  <Image 
+                    src={avatar?.preview_image_url}
+                    alt={avatar?.avatar_id}
+                    width={100}
+                    height={100}
+                    className='rounded-lg bg-black'
+                  />
+                  <h2 className='text-center'>{avatar?.name}</h2>
                 </div>
               ))}
             </div>

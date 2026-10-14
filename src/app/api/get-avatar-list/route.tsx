@@ -8,7 +8,7 @@ export async function GET(req: any) {
     try {
         const result = await axios.get('https://api.heygen.com/v3/avatars',{
             headers: {
-                    "x-api-key": `${process.env.HEYGEN_API_KEY!}`,
+                    "x-api-key": ` ${process.env.HEYGEN_API_KEY!}`,
             }
         });
 
