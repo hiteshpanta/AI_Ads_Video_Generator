@@ -6,6 +6,7 @@ import { api } from '../../../../../convex/_generated/api';
 import Script from './_components/Script';
 import UploadFiles from './_components/UploadFiles';
 import AvatarList from './_components/AvatarList';
+import VoiceList from './_components/VoiceList';
 
 interface ScriptItem {
     content: string;
@@ -66,6 +67,7 @@ function CreateVideo() {
             <Script videoData={videoData} onHandleInputChange={onHandleInputChange} />
             <UploadFiles videoData={videoData}/>
             <AvatarList videoData={videoData} onHandleInputChange={onHandleInputChange}/>
+            <VoiceList videoData={videoData} onHandleInputChange={onHandleInputChange}/>
         </div>
 
         <div>
