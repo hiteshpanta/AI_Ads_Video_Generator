@@ -60,7 +60,7 @@ export default function VoiceList({videoData, onHandleInputChange}: {videoData: 
               
 
               <div>
-                {voice?.gender == 'male' ? <Mars  className='text-blue-600'/> : <Venus className='text-pink-600'/>}
+                {voice?.gender?.toLowerCase() === 'male' ? <Mars  className='text-blue-600'/> : <Venus className='text-pink-600'/>}
               </div>
             </div>
           ))}
