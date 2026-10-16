@@ -24,7 +24,8 @@ function UploadFiles({videoData}: UploadFileProps) {
   return (
     <div className='p-5 shadow rounded-2xl mt-6'>
       <h2 className='font-bold text-lg flex gap-2 items-center'>
-        <ImageUp className='p-2 bg-blue-600 text-white h-10 w-10 rounded-md'/>Image/Video Upload</h2>
+        <ImageUp className='p-2 bg-blue-600 text-white h-10 w-10 rounded-md'/>
+        Image/Video Upload</h2>
 
         <hr className='my-3'/>
         <div className=''>

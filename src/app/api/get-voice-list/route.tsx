@@ -12,7 +12,7 @@ export async function GET(req: any) {
             }
         });
 
-        return NextResponse.json(result.data?.data)
+        return NextResponse.json(result.data ?? [])
 
     } catch (err: any) {
         console.error("Heygen Error: ", err?.response?.data || err.message );
