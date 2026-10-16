@@ -1,5 +1,5 @@
 "use client"
-import { useConvex, useQuery } from 'convex/react';
+import { useConvex } from 'convex/react';
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { api } from '../../../../../convex/_generated/api';
@@ -12,7 +12,7 @@ interface ScriptItem {
     content: string;
 }
 
-interface VideoDataInterfce {
+interface VideoDataInterface {
     _id: string;
     uid: string;
     topic: string;
@@ -20,9 +20,9 @@ interface VideoDataInterfce {
 
 }
 function CreateVideo() {
-    const { video_id } = useParams();
+    const { video_id } = useParams<{ video_id: string }>();
     const convex = useConvex();
-    const [videoData, setVideoData] = useState<VideoDataInterfce | null>(null);
+    const [videoData, setVideoData] = useState<VideoDataInterface | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     console.log(video_id);
 
@@ -36,9 +36,9 @@ function CreateVideo() {
     const getVidoeData = async () => {
         try {
             setLoading(true);
-             const result: VideoDataInterfce | null = await convex.query(api.videoData.GetVideoDataById, {
+             const result = await convex.query(api.videoData.GetVideoDataById, {
                     vid : video_id,
-            })
+            });
             setVideoData(result);
             console.log("Video Data:",result)
 
@@ -49,7 +49,7 @@ function CreateVideo() {
         }
     }
 
-    const onHandleInputChange = <K extends keyof VideoDataInterfce>(field: K, value: VideoDataInterfce[K]) => {
+    const onHandleInputChange = <K extends keyof VideoDataInterface>(field: K, value: VideoDataInterface[K]) => {
         setVideoData((prev) =>
             prev ? {...prev,
             [field]: value} : prev

@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Video } from 'lucide-react';
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 interface ScriptItem {
     content: string;
@@ -24,15 +24,18 @@ interface ScriptProps {
 }
 
 function Script({videoData, onHandleInputChange }:  ScriptProps) {
-    if (!videoData) return <div>Loading script..</div>
     const [selectedIndex, setSelectedIndex] = useState(0);
+    if (!videoData) return <div>Loading script..</div>
+    
 
     const selectedScriptContent = videoData.scriptVariant[selectedIndex]?.content ?? '';
 
     const handleTextareaChange =(value: string) => {
-        const updatedScripts = [...videoData.scriptVariant]
-        if (updatedScripts[selectedIndex]) updatedScripts[selectedIndex].content = value
-        onHandleInputChange('scriptVariant', updatedScripts)
+        const updatedScripts = videoData.scriptVariant.map(
+          (script, index) => index === selectedIndex ? { ...script, content: value} : script
+        );
+        onHandleInputChange("scriptVariant", updatedScripts);
+        onHandleInputChange('script', value);
     }
 
   return (
@@ -63,7 +66,11 @@ function Script({videoData, onHandleInputChange }:  ScriptProps) {
         {videoData?.scriptVariant?.map((script, index) => (
             <div key={index} className={`p-5 text-sm border rounded-lg cursor-pointer  transition-all duration-300 hover:bg-blue-100
                 ${script?.content == videoData?.script && 'border-primary bg-blue-100'}`}
-                onClick={() => setSelectedIndex(index)}
+                onClick={() => {
+                                  setSelectedIndex(index);
+                                  onHandleInputChange('script', script.content)
+                              }
+                        }
                 >
                 <h2 className='line-clamp-3'>{script.content}</h2>
             </div>
