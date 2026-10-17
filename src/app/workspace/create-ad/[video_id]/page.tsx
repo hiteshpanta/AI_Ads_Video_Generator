@@ -9,6 +9,7 @@ import AvatarList from './_components/AvatarList';
 import VoiceList from './_components/VoiceList';
 import { Button } from '@/components/ui/button';
 import { Sparkle } from 'lucide-react';
+import ImageKit from 'imagekit';
 
 interface ScriptItem {
     content: string;
@@ -31,6 +32,11 @@ function CreateVideo() {
     const [videoData, setVideoData] = useState<VideoDataInterface | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [ isGenerateButtonClick, setIsGenerateButtonClick] = useState<boolean>(false);
+    const imageKit = new ImageKit({
+        publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY,
+        privateKey: process.env.NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY,
+        urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL
+    })
 
     useEffect(() => {
         if (video_id) {
@@ -40,6 +46,7 @@ function CreateVideo() {
     },[video_id]);
 
     const getVidoeData = async () => {
+        if (!video_id) return;
         try {
             setLoading(true);
              const result = await convex.query(api.videoData.GetVideoDataById, {
@@ -61,6 +68,41 @@ function CreateVideo() {
             [field]: value} : prev
         );
         console.log(videoData)
+    }
+
+
+
+    const GenerateVideo = async () => {
+        //upload the images
+        const rawFiles = videoData?.rawFiles
+        let uploadedFiles = [];
+        // rawFiles?.forEach(async(file) => {
+            
+        //     console.log(imageRef.url)
+        //     uploadedFiles.push(imageRef.url)
+        // });
+
+        const uploadPromises = rawFiles?.map(async(file) => 
+           await imageKit.upload({
+                file: file,
+                fileName: Date.now().toString()+ ".png",
+                isPublished: true,
+            })
+        )
+
+        try{
+            const uploadedFilesPromise = await Promise.all(uploadPromises)
+            const uploadFiles = uploadedFilesPromise.map((imageRef) => imageRef.url)
+
+        } catch (err) {
+            console.log('Error: ', err);
+        }
+        
+
+        onHandleInputChange('assets', uploadFiles);
+
+        
+        //generate voice + generate avatar
     }
 
    

@@ -1,6 +1,5 @@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { SignInButton } from '@clerk/nextjs';
 import { Video } from 'lucide-react';
 import { useEffect, useState } from 'react'
 
