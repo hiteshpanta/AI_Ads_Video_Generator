@@ -1,7 +1,8 @@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { SignInButton } from '@clerk/nextjs';
 import { Video } from 'lucide-react';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface ScriptItem {
     content: string;
@@ -25,17 +26,51 @@ interface ScriptProps {
 
 function Script({videoData, onHandleInputChange }:  ScriptProps) {
     const [selectedIndex, setSelectedIndex] = useState(0);
-    if (!videoData) return <div>Loading script..</div>
-    
 
-    const selectedScriptContent = videoData.scriptVariant[selectedIndex]?.content ?? '';
+    useEffect(() => {
+      if (!videoData?.scriptVariant?.length) {
+        setSelectedIndex(0);
+        return;
+      }
+
+      const matchingIndex = videoData.scriptVariant.findIndex((item) =>
+        item.content === videoData.script);
+
+      if (matchingIndex !== -1) {
+        setSelectedIndex(matchingIndex);
+      } else {
+        setSelectedIndex((current) => Math.min(current, videoData.scriptVariant.length -1));
+      }
+    }, [videoData?._id, videoData?.scriptVariant, videoData?.script]);
+
+    if(!videoData) {
+      return <div>Loading script...</div>
+    }
+    
+    const scripts = videoData.scriptVariant ?? [];
+
+    const selectedScriptContent = scripts[selectedIndex]?.content ?? videoData.script ?? "";
 
     const handleTextareaChange =(value: string) => {
-        const updatedScripts = videoData.scriptVariant.map(
-          (script, index) => index === selectedIndex ? { ...script, content: value} : script
-        );
+        const updatedScripts = [...scripts];
+
+        if (updatedScripts[selectedIndex]) {
+          updatedScripts[selectedIndex] = {
+            ...updatedScripts[selectedIndex],
+            content: value,
+          };
+        } else {
+          updatedScripts.push({ content: value });
+          setSelectedIndex(0);
+        }
+
         onHandleInputChange("scriptVariant", updatedScripts);
         onHandleInputChange('script', value);
+    }
+
+    const handleSelectScript = (index: number) => {
+      setSelectedIndex(index);
+      onHandleInputChange('script', scripts[index].content);
     }
 
   return (
@@ -47,7 +82,7 @@ function Script({videoData, onHandleInputChange }:  ScriptProps) {
         <label className='text-gray-500'> Video Project Topic </label>
         <Input 
             className='text-lg'
-            value={videoData?.topic}
+            value={videoData.topic ?? ""}
             onChange={(e) => onHandleInputChange('topic', e.target.value)}
         />
       </div>
@@ -63,17 +98,12 @@ function Script({videoData, onHandleInputChange }:  ScriptProps) {
 
 
       <div className='grid gap-3 mt-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1'>
-        {videoData?.scriptVariant?.map((script, index) => (
-            <div key={index} className={`p-5 text-sm border rounded-lg cursor-pointer  transition-all duration-300 hover:bg-blue-100
-                ${script?.content == videoData?.script && 'border-primary bg-blue-100'}`}
-                onClick={() => {
-                                  setSelectedIndex(index);
-                                  onHandleInputChange('script', script.content)
-                              }
-                        }
+        {scripts.map((script, index) => (
+            <button type='button' key={index} onClickCapture={() => handleSelectScript(index)} className={`p-5 text-sm border rounded-lg cursor-pointer  transition-all duration-300 hover:bg-blue-100
+                ${selectedIndex === index ? 'border-primary bg-blue-100' : ''}`}
                 >
-                <h2 className='line-clamp-3'>{script.content}</h2>
-            </div>
+                <span className='line-clamp-3'>{script.content}</span>
+            </button>
         ))}
       </div>
     </div>

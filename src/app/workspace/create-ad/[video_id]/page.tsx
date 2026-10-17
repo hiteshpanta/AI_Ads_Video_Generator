@@ -7,6 +7,8 @@ import Script from './_components/Script';
 import UploadFiles from './_components/UploadFiles';
 import AvatarList from './_components/AvatarList';
 import VoiceList from './_components/VoiceList';
+import { Button } from '@/components/ui/button';
+import { Sparkle } from 'lucide-react';
 
 interface ScriptItem {
     content: string;
@@ -17,6 +19,10 @@ interface VideoDataInterface {
     uid: string;
     topic: string;
     scriptVariant: ScriptItem[];
+    voice?: any;
+    avatar?: any;
+    rawFiles?: File[];
+    [key: string]: any;
 
 }
 function CreateVideo() {
@@ -24,7 +30,7 @@ function CreateVideo() {
     const convex = useConvex();
     const [videoData, setVideoData] = useState<VideoDataInterface | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    console.log(video_id);
+    const [ isGenerateButtonClick, setIsGenerateButtonClick] = useState<boolean>(false);
 
     useEffect(() => {
         if (video_id) {
@@ -40,7 +46,7 @@ function CreateVideo() {
                     vid : video_id,
             });
             setVideoData(result);
-            console.log("Video Data:",result)
+            // console.log("Video Data:",result)
 
         } catch (err) {
             console.log(err)
@@ -49,12 +55,15 @@ function CreateVideo() {
         }
     }
 
-    const onHandleInputChange = <K extends keyof VideoDataInterface>(field: K, value: VideoDataInterface[K]) => {
+    const onHandleInputChange = (field: string, value: any) => {
         setVideoData((prev) =>
             prev ? {...prev,
             [field]: value} : prev
-        )
+        );
+        console.log(videoData)
     }
+
+   
 
   
    
@@ -65,9 +74,10 @@ function CreateVideo() {
       <div className='grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 mt-8'>
         <div className='md:col-span-2'>
             <Script videoData={videoData} onHandleInputChange={onHandleInputChange} />
-            <UploadFiles videoData={videoData}/>
+            <UploadFiles videoData={videoData} onHandleInputChange={onHandleInputChange}/>
             <AvatarList videoData={videoData} onHandleInputChange={onHandleInputChange}/>
             <VoiceList videoData={videoData} onHandleInputChange={onHandleInputChange}/>
+            <Button className={'mt-7 w-full'}> <Sparkle/> Generate</Button>
         </div>
 
         <div>
