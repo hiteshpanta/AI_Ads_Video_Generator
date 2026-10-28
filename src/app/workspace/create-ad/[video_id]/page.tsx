@@ -32,6 +32,7 @@ function CreateVideo() {
     const [videoData, setVideoData] = useState<VideoDataInterface | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [ isGenerateButtonClick, setIsGenerateButtonClick] = useState<boolean>(false);
+
     const imageKit = new ImageKit({
         publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY,
         privateKey: process.env.NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY,
@@ -76,6 +77,7 @@ function CreateVideo() {
         //upload the images
         const rawFiles = videoData?.rawFiles
         let uploadedFiles = [];
+        
         // rawFiles?.forEach(async(file) => {
             
         //     console.log(imageRef.url)
@@ -85,21 +87,22 @@ function CreateVideo() {
         const uploadPromises = rawFiles?.map(async(file) => 
            await imageKit.upload({
                 file: file,
-                fileName: Date.now().toString()+ ".png",
+                fileName: Date.now().toString() + ".png",
                 isPublished: true,
             })
         )
 
         try{
             const uploadedFilesPromise = await Promise.all(uploadPromises)
-            const uploadFiles = uploadedFilesPromise.map((imageRef) => imageRef.url)
+            const uploadedFiles = uploadedFilesPromise.map((imageRef) => imageRef.url)
+            console.log(uploadedFiles)
+            onHandleInputChange('assets', uploadedFiles);
 
         } catch (err) {
             console.log('Error: ', err);
         }
         
 
-        onHandleInputChange('assets', uploadFiles);
 
         
         //generate voice + generate avatar
