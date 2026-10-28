@@ -46,14 +46,14 @@ function CreateAd() {
       }
       
 
-      await createvideo({
+      const videoId = await createvideo({
         uid: userDetail?._id,
         topic: userInput,
         scriptVariant: jsonResult,
       });
 
       console.log("Saved successfully");
-      router.push('/workspace/create-ad/' + response)
+      router.push(`/workspace/create-ad/${videoId}`)
       
     } catch (err: any) {
       console.error(err?.response?.data || err.message);

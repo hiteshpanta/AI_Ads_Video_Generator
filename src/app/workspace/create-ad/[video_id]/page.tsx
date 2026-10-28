@@ -1,7 +1,7 @@
 "use client"
 import { useConvex } from 'convex/react';
 import { useParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { api } from '../../../../../convex/_generated/api';
 import Script from './_components/Script';
 import UploadFiles from './_components/UploadFiles';
@@ -63,19 +63,19 @@ function CreateVideo() {
         }
     }
 
-    const onHandleInputChange = (field: string, value: any) => {
+    const onHandleInputChange = useCallback((field: string, value: any) => {
         setVideoData((prev) =>
             prev ? {...prev,
             [field]: value} : prev
         );
-        console.log(videoData)
-    }
+        // console.log(videoData)
+    }, [] );
 
 
 
     const GenerateVideo = async () => {
         //upload the images
-        const rawFiles = videoData?.rawFiles
+        const rawFiles = videoData?.rawFiles ?? [];
         let uploadedFiles = [];
         
         // rawFiles?.forEach(async(file) => {
@@ -84,16 +84,18 @@ function CreateVideo() {
         //     uploadedFiles.push(imageRef.url)
         // });
 
-        const uploadPromises = rawFiles?.map(async(file) => 
-           await imageKit.upload({
-                file: file,
-                fileName: Date.now().toString() + ".png",
-                isPublished: true,
-            })
+        const uploadedPromises = await Promise.all( 
+           rawFiles.map((file) =>
+                imageKit.upload({
+                    file: file,
+                    fileName: Date.now().toString() + ".png",
+                    isPublished: true,
+                })
+            )
         )
 
         try{
-            const uploadedFilesPromise = await Promise.all(uploadPromises)
+            // const uploadedFilesPromise = await Promise.all(uploadedPromises)
             const uploadedFiles = uploadedFilesPromise.map((imageRef) => imageRef.url)
             console.log(uploadedFiles)
             onHandleInputChange('assets', uploadedFiles);
@@ -122,7 +124,7 @@ function CreateVideo() {
             <UploadFiles videoData={videoData} onHandleInputChange={onHandleInputChange}/>
             <AvatarList videoData={videoData} onHandleInputChange={onHandleInputChange}/>
             <VoiceList videoData={videoData} onHandleInputChange={onHandleInputChange}/>
-            <Button className={'mt-7 w-full'}> <Sparkle/> Generate</Button>
+            <Button className={'mt-7 w-full'} onClick={() => GenerateVideo() }> <Sparkle/> Generate</Button>
         </div>
 
         <div>
