@@ -125,7 +125,7 @@ function CreateVideo() {
             <UploadFiles videoData={videoData} onHandleInputChange={onHandleInputChange}/>
             <AvatarList videoData={videoData} onHandleInputChange={onHandleInputChange}/>
             <VoiceList videoData={videoData} onHandleInputChange={onHandleInputChange}/>
-            <Button className={'mt-7 w-full'} onClick={() => GenerateVideo() }> <Sparkle/> Generate</Button>
+            <Button className={'mt-7 w-full'} onClick={GenerateVideo}> <Sparkle/> Generate</Button>
         </div>
 
         <div>
