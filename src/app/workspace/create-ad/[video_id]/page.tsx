@@ -84,19 +84,20 @@ function CreateVideo() {
         //     uploadedFiles.push(imageRef.url)
         // });
 
-        const uploadedPromises = await Promise.all( 
-           rawFiles.map((file) =>
-                imageKit.upload({
-                    file: file,
-                    fileName: Date.now().toString() + ".png",
-                    isPublished: true,
-                })
-            )
-        )
-
+        
         try{
+            const uploadedFilesPromises = await Promise.all( 
+                rawFiles.map((file) =>
+                        imageKit.upload({
+                            file: file,
+                            fileName: Date.now().toString() + ".png",
+                            isPublished: true,
+                        })
+                    )
+            )
+
             // const uploadedFilesPromise = await Promise.all(uploadedPromises)
-            const uploadedFiles = uploadedFilesPromise.map((imageRef) => imageRef.url)
+            const uploadedFiles = uploadedFilesPromises.map((imageRef) => imageRef.url)
             console.log(uploadedFiles)
             onHandleInputChange('assets', uploadedFiles);
 
