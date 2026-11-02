@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Sparkle } from 'lucide-react';
 import ImageKit from 'imagekit';
 import axios from 'axios';
+import { createVoiceApi } from '@/app/api/create-voice/route';
 
 interface ScriptItem {
     content: string;
@@ -112,15 +113,25 @@ function CreateVideo() {
         //generate voice + generate avatar
 
         // console.log("Scritp: ",videoData?.scriptVariant)
-        // console.log("Voice ID: ", videoData?.voice)
+        console.log("Full voice object:", videoData?.voice)
+        console.log("Voice ID: ", videoData?.voice?.id)
+        console.log("Voice id type: ", typeof videoData?.voice?.id)
+
+        const voiceId = videoData?.voice?.voice_id ?? '';
+
+        // const result = await axios.post('/api/create-voice', {
+        //     script: videoData?.scriptVariant?.map((item) => item.content).join(' '),
+        //     voiceId: voiceId
+
+        // })
 
         const result = await axios.post('/api/create-voice', {
-            script: videoData?.scriptVariant?.map((item) => item.content).join(' '),
-            voiceId: videoData?.voice
+            input: videoData?.scriptVariant?.map((item) => item.content).join(' '),
+            voiceId: videoData?.voice?.voice_id
 
         })
 
-        console.log(result.data)
+
     }
 
    
@@ -131,7 +142,7 @@ function CreateVideo() {
   return (
     <div>
       <h2 className='font-bold text-2xl'>Create Video Ads</h2>
-      <div className='grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 mt-8'>
+      <div className='grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 mt-8 gap-5'>
         <div className='md:col-span-2'>
             <Script videoData={videoData} onHandleInputChange={onHandleInputChange} />
             <UploadFiles videoData={videoData} onHandleInputChange={onHandleInputChange}/>
