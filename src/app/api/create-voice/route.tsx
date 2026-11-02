@@ -74,12 +74,43 @@ export async function POST(req: Request) {
         }
 
         const result = await createVoiceApi.audio.speech.create('https://api.heygen.com/v3/voices/speech' , {
-            model: 'heygen/heygen-voice-1-turbo:free',
+            "model": 'heygen/heygen-voice-1-turbo:free',
             "input": script,
             "voice_id": voiceId,
             // "rate": "100%"
         })
-        return NextResponse.json({ data: result })
+
+        const generatedVoiceId = result?.data?.data?._id;
+
+        const poll = async (retries = 10, interval =2000) => {
+            for(let i=0; i<retries; i++){
+                const pollRes = await axios.get('' + generatedVoiceId,
+                    {
+                        headers: {
+                            "Authorization": ``,
+                                    
+                        }
+                    }
+                );
+
+                const status = pollRes?.data?.data.status
+
+                if(status === 3){
+                    return pollRes?.data?.url;
+                } else if (status === 4) {
+                    throw new Error("Audio Processing Failed")
+                } 
+
+                await new Promise(resolve => setTimeout(resolve, interval))
+
+            }
+
+            
+        }
+
+        const audioUrl = await poll(10, 2000)
+        
+        return NextResponse.json({ audioUrl: audioUrl})
         
 
         
