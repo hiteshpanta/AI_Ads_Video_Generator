@@ -48,14 +48,15 @@ import OpenAI from "openai";
 
 
 
+export const runtime = "nodejs";
 
-export const createVoiceApi = new OpenAI({
-    baseURL: 'https://openrouter.ai/api/v1/audio/speech',
-    apiKey: process.env.OPENROUTER_API_KEY,
-    // defaultHeaders: {
+// export const createVoiceApi = new OpenAI({
+//     baseURL: 'https://openrouter.ai/api/v1/audio/speech',
+//     apiKey: process.env.OPENROUTER_API_KEY,
+//     // defaultHeaders: {
 
-    // }
-})
+//     // }
+// })
 
 
 export async function POST(req: Request) {
@@ -73,11 +74,40 @@ export async function POST(req: Request) {
             )
         }
 
-        const result = await createVoiceApi.audio.speech.create('https://api.heygen.com/v3/voices/speech' , {
-            "model": 'heygen/heygen-voice-1-turbo:free',
-            "input": script,
-            "voice_id": voiceId,
-            // "rate": "100%"
+        if ( typeof script !== "string" || typeof voiceId !== "string" ) {
+            return NextResponse.json(
+                { error: "Invalid script or voiceId"},
+                { status: 400 }
+            )
+        }
+
+        // if ( script.length > 5000 ) {
+        //     return NextResponse.json (
+        //         { error: "Script cannot exceed 5000 characters" },
+        //         { status: 400 }
+        //     )
+        // }
+
+        const apiKey = process.env.OPENROUTER_API_KEY;
+
+        if (!apiKey) {
+            throw new Error("OPENROUTER_API_KEY is missing");
+        }
+
+        const result = await fetch('https://openrouter.ai/api/v1/audio/speech' , {
+            "method": 'POST',
+            headers: {
+                Authorization: `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+            }
+        },
+        {
+           body: JSON.stringify({
+            model: "heygen/heygen-voice-1-turbo:free",
+            input: script,
+            voice: voiceId,
+            response_format: "mp3",
+           }), 
         })
 
         const generatedVoiceId = result?.data?.data?._id;
