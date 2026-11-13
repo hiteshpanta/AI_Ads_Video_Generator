@@ -1,5 +1,5 @@
-import axios from "axios";
-import { NextResponse } from "next/server";
+// import axios from "axios";
+// import { NextResponse } from "next/server";
 
 
 
@@ -48,6 +48,9 @@ import { NextResponse } from "next/server";
 
 
 
+// import axios from "axios";
+import { NextResponse } from "next/server";
+
 export const runtime = "nodejs";
 
 // export const createVoiceApi = new OpenAI({
@@ -59,17 +62,49 @@ export const runtime = "nodejs";
 // })
 
 
+function pcmToWav(pcm: Buffer, sampleRate = 44100, channels = 1 ) {
+    const header = Buffer.alloc(44);
+
+
+    header.write("RIFF", 0);
+    header.writeUInt32LE(36 + pcm.length, 4);
+    header.write("WAVE", 8);
+    header.write("fmt ", 12);
+    header.writeUInt32LE(16, 16);
+    header.writeUInt16LE(1, 20);
+    header.writeUInt16LE(channels, 22);
+    header.writeUInt32LE(sampleRate, 24);
+    header.writeUInt32LE(sampleRate * channels * 2, 28);
+    header.writeUInt16LE(channels * 2, 32);
+    header.writeUInt16LE(16, 34);
+    header.write("data", 36);
+    header.writeUInt32LE(pcm.length, 40);
+
+    return Buffer.concat([header, pcm]);
+}
+
+
 export async function POST(req: Request) {
 
 
     try{
+        const body = await req.json();
+
+        console.log("========== VOICE API DEBUG ==========");
+        console.log("Request body:", JSON.stringify(body, null, 2));
+        console.log("Script type:", typeof body.script);
+        console.log("Script length:", body.script?.length);
+        console.log("Voice ID:", body.voiceId);
+        console.log("=====================================");
 
         
-        const { script, voiceId } = await req.json();
+        const { script, voiceId } = body;
 
         if (!script || !voiceId) {
             return NextResponse.json(
-                { error: "script and voiceId are required" },
+                { error: "script and voiceId are required" ,
+                    received: { script: !!script, voiceId: !!voiceId }
+                },
                 { status: 400 }
             )
         }
@@ -94,7 +129,7 @@ export async function POST(req: Request) {
             throw new Error("OPENROUTER_API_KEY is missing");
         }
 
-        const result = await fetch('https://openrouter.ai/api/v1/audio/speech' , {
+        const response = await fetch('https://openrouter.ai/api/v1/audio/speech' , {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${apiKey}`,
@@ -104,48 +139,71 @@ export async function POST(req: Request) {
                 model: "heygen/heygen-voice-1-turbo:free",
                 input: script,
                 voice: voiceId,
-                response_format: "mp3",
-            })
+                response_format: "pcm",
+            }),
+            signal: AbortSignal.timeout(120000)
         },
         )
 
 
-        if (!result.ok) {
-            const errorData = await result.json();
-            throw new Error(errorData);
+        if (!response.ok) {
+            const errorData = await response.text();
+
+            console.log("OpenRouter TTS Error: ", errorData)
+
+            return NextResponse.json(
+                { error: "Voice Generation failed", details: errorData },
+                { status: 502 }
+            )
         }
 
-        const generatedVoiceId = result?.data?.data?._id;
+        const pcm = Buffer.from(await response.arrayBuffer());
 
-        const poll = async (retries = 10, interval =2000) => {
-            for(let i=0; i<retries; i++){
-                const pollRes = await axios.get('' + generatedVoiceId,
-                    {
-                        headers: {
-                            "Authorization": ``,
-                                    
-                        }
-                    }
-                );
+        if (!pcm.length) {
+            throw new Error("Empty PCM audio response");
 
-                const status = pollRes?.data?.data.status
+        }
 
-                if(status === 3){
-                    return pollRes?.data?.url;
-                } else if (status === 4) {
-                    throw new Error("Audio Processing Failed")
-                } 
+        const wavBuffer = pcmToWav(pcm, 44100, 1);
 
-                await new Promise(resolve => setTimeout(resolve, interval))
-
+        return new Response(new Uint8Array(wavBuffer), {
+            status: 200,
+            headers: {
+                "Content-Type": "audio/wav",
+                "Content-Disposition": `attachment; filename="generated_voice.wav"`,
+                "Content-Length": String(wavBuffer.length),
             }
+        });
+
+        // const poll = async (retries = 10, interval =2000) => {
+        //     for(let i=0; i<retries; i++){
+        //         const pollRes = await axios.get('' + generatedVoiceId,
+        //             {
+        //                 headers: {
+        //                     "Authorization": ``,
+                                    
+        //                 }
+        //             }
+        //         );
+
+        //         const status = pollRes?.data?.data.status
+
+        //         if(status === 3){
+        //             return pollRes?.data?.url;
+        //         } else if (status === 4) {
+        //             throw new Error("Audio Processing Failed")
+        //         } 
+
+        //         await new Promise(resolve => setTimeout(resolve, interval))
+
+        //     }
 
             
-        }
+        // }
 
-        const audioUrl = await poll(10, 2000)
+        // const audioUrl = await poll(10, 2000)
         
-        return NextResponse.json({ audioUrl: audioUrl})
+        // return NextResponse.json({ audioUrl: audioUrl})
         
 
         
