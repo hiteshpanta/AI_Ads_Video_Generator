@@ -1,6 +1,6 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
+
 
 
 
@@ -95,20 +95,25 @@ export async function POST(req: Request) {
         }
 
         const result = await fetch('https://openrouter.ai/api/v1/audio/speech' , {
-            "method": 'POST',
+            method: "POST",
             headers: {
                 Authorization: `Bearer ${apiKey}`,
                 "Content-Type": "application/json",
-            }
+            },
+            body: JSON.stringify({
+                model: "heygen/heygen-voice-1-turbo:free",
+                input: script,
+                voice: voiceId,
+                response_format: "mp3",
+            })
         },
-        {
-           body: JSON.stringify({
-            model: "heygen/heygen-voice-1-turbo:free",
-            input: script,
-            voice: voiceId,
-            response_format: "mp3",
-           }), 
-        })
+        )
+
+
+        if (!result.ok) {
+            const errorData = await result.json();
+            throw new Error(errorData);
+        }
 
         const generatedVoiceId = result?.data?.data?._id;
 
