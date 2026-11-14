@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Sparkle } from 'lucide-react';
 import ImageKit from 'imagekit';
 import axios from 'axios';
-import { createVoiceApi } from '@/app/api/create-voice/route';
+// import { createVoiceApi } from '@/app/api/create-voice/route';
 
 interface ScriptItem {
     content: string;
@@ -128,7 +128,7 @@ function CreateVideo() {
       
 
         const result = await axios.post('/api/create-voice', {
-            input: videoData?.scriptVariant?.map((item) => item.content).join(' '),
+            script: videoData?.scriptVariant?.map((item) => item.content).join(' '),
             voiceId: videoData?.voice?.voice_id
 
         })

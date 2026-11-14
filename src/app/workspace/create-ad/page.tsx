@@ -65,7 +65,7 @@ function CreateAd() {
 
       const voiceResponse = await axios.post('/api/create-voice', 
         {
-          input: narration,
+          script: narration,
           voiceId: "heygen/heygen-voice-1-turbo:free"
         },
         {
